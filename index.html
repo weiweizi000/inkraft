@@ -334,27 +334,49 @@
 
     /* Pricing */
     .pricing { border-top: 1px solid var(--line); background: #eae9e0; }
-    .price-grid { display: grid; grid-template-columns: repeat(3,1fr); border-top: 1px solid var(--ink); border-left: 1px solid var(--line); }
-    .price-card { position: relative; min-height: 510px; padding: 32px; display: flex; flex-direction: column; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--paper); transition: background .25s, transform .25s; }
-    .price-card:hover { z-index: 2; background: var(--white); transform: translateY(-5px); }
-    .price-card.featured { margin-top: -12px; min-height: 522px; border: 1px solid var(--ink); background: var(--ink); color: var(--white); box-shadow: 10px 10px 0 rgba(17,19,15,.08); }
+    .billing-strip { margin: -20px 0 42px; padding: 15px 0; display: flex; align-items: center; gap: 30px; border-block: 1px solid var(--line); color: #626a5b; font-size: 11px; }
+    .billing-strip strong { color: var(--ink); font-weight: 750; }
+    .billing-strip span { display: inline-flex; align-items: center; gap: 9px; }
+    .billing-strip span::before { content: ""; width: 5px; height: 5px; background: #829d3e; transform: rotate(45deg); }
+    .billing-strip .billing-lead { margin-right: auto; color: var(--ink); font-family: var(--mono); font-size: 9px; letter-spacing: 1.2px; }
+    .billing-strip .billing-lead::before { background: var(--acid); outline: 1px solid var(--ink); }
+    .price-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; align-items: stretch; }
+    .price-card { position: relative; min-width: 0; padding: 30px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); background: var(--paper); transition: background .25s, transform .3s var(--ease), box-shadow .3s var(--ease); }
+    .price-card::after { content: ""; position: absolute; right: -45px; bottom: -45px; width: 130px; height: 130px; border: 1px solid rgba(17,19,15,.07); border-radius: 50%; pointer-events: none; }
+    .price-card:hover { z-index: 2; background: var(--white); transform: translateY(-6px); box-shadow: 0 18px 45px rgba(17,19,15,.08); }
+    .price-card.featured { border-color: var(--ink); background: var(--ink); color: var(--white); box-shadow: 8px 8px 0 rgba(17,19,15,.09); transform: translateY(-12px); }
     .price-card.featured::before { content: ""; position: absolute; inset: 0 0 auto; height: 5px; background: var(--acid); }
-    .price-card.featured:hover { background: #171a14; }
-    .popular { position: absolute; top: 25px; right: 25px; padding: 5px 8px; background: var(--acid); color: var(--ink); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .5px; }
-    .plan-no { margin-bottom: 35px; color: #858d7d; font-family: var(--mono); font-size: 8px; letter-spacing: 1.2px; }
-    .featured .plan-no { color: #77816f; }
-    .plan-name { font-size: 18px; font-weight: 750; }
-    .plan-desc { min-height: 43px; margin: 12px 0 28px; color: #737b6b; font-size: 12px; line-height: 1.75; }
-    .featured .plan-desc { color: #9ca594; }
-    .price { margin-bottom: 27px; font-family: var(--display); font-size: 51px; letter-spacing: -2px; line-height: 1; }
-    .price small { color: #7b8373; font-family: var(--sans); font-size: 11px; letter-spacing: 0; }
-    .price-card ul { margin: 0 0 30px; padding: 23px 0 0; display: grid; gap: 14px; border-top: 1px solid #d4d7ca; list-style: none; color: #5b6354; font-size: 12px; }
-    .featured ul { border-color: #3c4237; color: #bdc5b5; }
+    .price-card.featured::after { border-color: rgba(215,255,99,.16); box-shadow: 0 0 0 25px rgba(215,255,99,.025), 0 0 0 50px rgba(215,255,99,.018); }
+    .price-card.featured:hover { background: #171a14; transform: translateY(-17px); box-shadow: 8px 20px 45px rgba(17,19,15,.18); }
+    .popular { position: absolute; top: 26px; right: 25px; padding: 6px 9px; background: var(--acid); color: var(--ink); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .5px; }
+    .plan-no { margin-bottom: 28px; color: #858d7d; font-family: var(--mono); font-size: 8px; letter-spacing: 1.2px; }
+    .featured .plan-no { color: #8e9983; }
+    .plan-name { display: block; font-size: 22px; font-weight: 750; letter-spacing: -.6px; }
+    .plan-en { margin-top: 6px; display: block; color: #89917f; font-family: var(--mono); font-size: 8px; letter-spacing: 1.1px; }
+    .featured .plan-en { color: #818c77; }
+    .plan-desc { min-height: 46px; margin: 17px 0 25px; color: #68715f; font-size: 12px; line-height: 1.8; }
+    .featured .plan-desc { color: #a5ae9c; }
+    .price { display: flex; align-items: baseline; white-space: nowrap; font-family: var(--display); line-height: .9; }
+    .price .currency { margin-right: 4px; font-family: var(--sans); font-size: 22px; font-weight: 500; letter-spacing: -1px; }
+    .price strong { font-size: 70px; font-weight: 400; letter-spacing: -4px; }
+    .price small { margin-left: 9px; color: #6e7765; font-family: var(--sans); font-size: 11px; letter-spacing: 0; }
+    .featured .price small { color: #a6b099; }
+    .ten-page { margin: 17px 0 25px; padding: 12px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #e4e5d9; color: #69715f; font-size: 10px; }
+    .ten-page strong { color: var(--ink); font-family: var(--mono); font-size: 13px; font-weight: 700; }
+    .ten-page strong small { font-size: 9px; font-weight: 400; }
+    .featured .ten-page { background: #24291e; color: #9ca792; }
+    .featured .ten-page strong { color: var(--acid); }
+    .price-card ul { margin: 0 0 26px; padding: 22px 0 0; display: grid; gap: 13px; border-top: 1px solid #d4d7ca; list-style: none; color: #535d4b; font-size: 12px; }
+    .featured ul { border-color: #3c4237; color: #c3ccba; }
     .price-card li::before { content: "↳"; margin-right: 10px; color: #748b35; font-family: var(--mono); }
     .featured li::before { color: var(--acid); }
-    .price-card .btn { width: 100%; margin-top: auto; }
-    .featured .btn-ghost { border-color: #ffffff25; color: var(--white); }
-    .pricing-foot { margin-top: 22px; display: flex; justify-content: space-between; color: #747c6d; font-family: var(--mono); font-size: 8px; letter-spacing: .8px; }
+    .plan-terms { position: relative; z-index: 1; margin-top: auto; padding-top: 18px; display: grid; grid-template-columns: 1fr 1.35fr; gap: 12px; border-top: 1px solid #d4d7ca; }
+    .plan-terms span { color: #858d7d; font-size: 9px; line-height: 1.65; }
+    .plan-terms b { margin-bottom: 4px; display: block; color: var(--ink); font-size: 11px; font-weight: 700; }
+    .featured .plan-terms { border-color: #3c4237; }
+    .featured .plan-terms span { color: #7f8a74; }
+    .featured .plan-terms b { color: var(--white); }
+    .pricing-foot { margin-top: 22px; display: flex; justify-content: space-between; gap: 25px; color: #747c6d; font-family: var(--mono); font-size: 8px; line-height: 1.7; letter-spacing: .8px; }
 
     /* FAQ */
     .faq-grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 100px; }
@@ -477,12 +499,13 @@
     .style-lab.is-paused .demo-progress i { animation-play-state: paused; }
 
     /* Services band inside pricing */
-    .services-band { margin-top: 60px; padding: 38px 40px; border: 1px solid var(--ink); background: var(--white); display: grid; grid-template-columns: 1fr 1.45fr; gap: 44px; align-items: center; }
-    .services-band h3 { margin: 0; font-size: 28px; letter-spacing: -1.2px; line-height: 1.2; }
+    .services-band { position: relative; margin-top: 58px; padding: 40px; border: 1px solid var(--ink); background: var(--white); display: grid; grid-template-columns: .9fr 1.5fr; gap: 54px; align-items: center; }
+    .services-band::before { content: "SERVICE / 交付说明"; position: absolute; top: 0; right: 0; padding: 7px 11px; background: var(--ink); color: var(--acid); font-family: var(--mono); font-size: 7px; letter-spacing: 1px; }
+    .services-band h3 { margin: 0; font-size: 28px; letter-spacing: -1.2px; line-height: 1.3; }
     .services-band h3 em { font-family: var(--serif); font-weight: 400; font-style: normal; }
-    .services-band > p { margin: 14px 0 0; color: var(--muted); font-size: 12px; line-height: 1.8; }
-    .services-list { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2,1fr); gap: 15px 30px; list-style: none; }
-    .services-list li { display: flex; gap: 11px; align-items: flex-start; color: #4c5445; font-size: 12px; line-height: 1.65; }
+    .services-band > div > p { margin: 16px 0 0; color: var(--muted); font-size: 12px; line-height: 1.85; }
+    .services-list { margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2,1fr); gap: 19px 28px; list-style: none; }
+    .services-list li { display: flex; gap: 11px; align-items: flex-start; color: #4c5445; font-size: 11px; line-height: 1.75; }
     .services-list li::before { content: "✓"; flex: none; width: 19px; height: 19px; display: grid; place-items: center; background: var(--acid); color: var(--ink); font-family: var(--mono); font-size: 10px; font-weight: 700; }
 
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -529,9 +552,14 @@
       .demo-slide h3 { margin-top: 30px; font-size: 27px; }
       .demo-slide p { font-size: 9px; }
       .demo-slide .ds-page { left: 30px; bottom: 18px; }
+      .billing-strip { gap: 18px; flex-wrap: wrap; }
+      .billing-strip .billing-lead { width: 100%; }
       .price-card { padding: 25px 22px; }
-      .price { font-size: 43px; }
-      .price small { display: block; margin-top: 10px; line-height: 1.5; }
+      .price strong { font-size: 58px; }
+      .price .currency { font-size: 19px; }
+      .plan-name { font-size: 20px; }
+      .popular { top: 22px; right: 18px; }
+      .plan-terms { grid-template-columns: 1fr; }
       .faq-grid { gap: 50px; }
       .cta-grid { grid-template-columns: 1fr; gap: 40px; }
       .footer { grid-template-columns: 1fr 1fr; }
@@ -638,13 +666,21 @@
       .demo-slide .ds-kicker { font-size: 6px; letter-spacing: 1px; }
       .demo-slide .ds-page { bottom: 13px; left: 23px; font-size: 8px; }
       .stage-caption { font-size: 8px; }
-      .price-grid { grid-template-columns: 1fr; }
-      .price-card, .price-card.featured { min-height: 480px; margin-top: 0; padding: 29px; }
+      .billing-strip { margin-top: -10px; margin-bottom: 30px; gap: 12px 20px; }
+      .billing-strip span { font-size: 10px; }
+      .price-grid { grid-template-columns: 1fr; gap: 16px; }
+      .price-card, .price-card.featured { min-height: 0; margin-top: 0; padding: 30px; transform: none; }
       .price-card.featured { order: -1; }
-      .price { font-size: 50px; }
-      .price small { display: inline; margin: 0; }
+      .price-card.featured:hover { transform: translateY(-5px); }
+      .plan-no { margin-bottom: 24px; }
+      .plan-desc { min-height: 0; }
+      .price strong { font-size: 66px; }
+      .price small { display: inline; margin-left: 9px; }
+      .plan-terms { grid-template-columns: 1fr 1.35fr; }
+      .services-band { padding: 35px 25px 28px; }
+      .services-list { grid-template-columns: 1fr; gap: 15px; }
       .pricing-foot { line-height: 1.6; }
-      .pricing-foot span:last-child { display: none; }
+      .pricing-foot span:first-child { display: none; }
       .faq-grid { grid-template-columns: 1fr; gap: 35px; }
       .faq-intro { position: static; }
       .faq-q { grid-template-columns: 24px 1fr 20px; gap: 10px; }
@@ -666,7 +702,10 @@
       .saved { display: none; }
       .window-body { grid-template-columns: 58px 1fr; }
       .main-slide h3 { font-size: 15px; }
-      .price small { display: block; margin-top: 9px; }
+      .price-card, .price-card.featured { padding: 25px 22px; }
+      .price strong { font-size: 58px; }
+      .price small { display: inline; margin: 0 0 0 7px; }
+      .popular { top: 21px; right: 18px; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -856,27 +895,49 @@
 
     <section class="section pricing" id="pricing" aria-labelledby="pricingTitle">
       <div class="container">
-        <div class="section-head reveal"><div><span class="kicker">05 — 价格和服务 / PRICING &amp; SERVICES</span><h2 id="pricingTitle">清晰的价格，<br>可靠的<em>服务。</em></h2></div><p>以下方案用于说明墨构的产品定位与能力边界；每一档都包含完整的可编辑交付与品牌适配能力。本页是产品概念介绍，不提供购买、注册或订阅入口。</p></div>
+        <div class="section-head reveal"><div><span class="kicker">05 — 价格和服务 / PRICING &amp; SERVICES</span><h2 id="pricingTitle">按页计价，<br>为每一页<em>负责。</em></h2></div><p>只做需要的页数，不为用不到的功能买单。根据资料完整度与视觉要求选择档位，每一页都包含设计、校对与可编辑源文件交付。</p></div>
+        <div class="billing-strip reveal"><span class="billing-lead">PER PAGE / 按页计费</span><span><strong>10 页</strong>起做</span><span>按确认页数计价</span><span>无订阅费用</span></div>
         <div class="price-grid reveal-stagger">
-          <article class="price-card tilt"><span class="plan-no">PLAN / 01</span><span class="plan-name">体验版</span><p class="plan-desc">给刚开始关注表达的人，了解墨构的基本工作方式。</p><div class="price">¥0 <small>/ 永久免费</small></div><ul><li>3 套演示额度</li><li>每套最多 15 页</li><li>基础视觉风格</li><li>PDF 与在线链接导出</li></ul><a class="btn btn-ghost" href="#workflow">了解创作流程</a></article>
-          <article class="price-card featured tilt"><span class="popular">最受欢迎</span><span class="plan-no">PLAN / 02</span><span class="plan-name">专业版</span><p class="plan-desc">为高频汇报与专业表达，设想更完整的创作能力。</p><div class="price">¥199 <small>/ 月</small></div><ul><li>每月 100 套演示</li><li>不限页数与全部视觉风格</li><li>PPTX 全元素可编辑导出</li><li>文档导入与品牌 Kit</li><li>优先生成队列</li></ul><a class="btn btn-acid" href="#features">查看完整能力 <span class="arrow">↗</span></a></article>
-          <article class="price-card tilt"><span class="plan-no">PLAN / 03</span><span class="plan-name">团队版</span><p class="plan-desc">让团队共享同一套品牌语言与表达规范。</p><div class="price">¥159 <small>/ 人 / 月 · 5 人起</small></div><ul><li>包含专业版全部能力</li><li>共享工作区与模板</li><li>团队品牌资产管理</li><li>成员权限与使用分析</li><li>专属客户支持</li></ul><a class="btn btn-ghost" href="mailto:hello@inkraft.studio">邮件交流 <span class="arrow">↗</span></a></article>
+          <article class="price-card tilt">
+            <span class="plan-no">PLAN / 01</span><span class="plan-name">基础美化</span><span class="plan-en">ESSENTIAL POLISH</span>
+            <p class="plan-desc">已有完整内容，需要统一版式、字体与配色，让汇报干净、清楚。</p>
+            <div class="price"><span class="currency">¥</span><strong>49</strong><small>/ 页起</small></div>
+            <div class="ten-page"><span>10 页参考价</span><strong>¥490 <small>起</small></strong></div>
+            <ul><li>统一字体、配色与页面网格</li><li>基础图文排版与图表美化</li><li>全稿对齐、校对与细节清理</li><li>PPTX 可编辑源文件 + PDF</li></ul>
+            <div class="plan-terms"><span><b>1 轮修改</b>基于已确认内容</span><span><b>2–3 个工作日</b>资料确认后起算</span></div>
+          </article>
+          <article class="price-card featured tilt">
+            <span class="popular">推荐选择</span><span class="plan-no">PLAN / 02</span><span class="plan-name">专业设计</span><span class="plan-en">PROFESSIONAL DESIGN</span>
+            <p class="plan-desc">内容基本明确，需要梳理信息层级，并建立更完整的视觉表达。</p>
+            <div class="price"><span class="currency">¥</span><strong>99</strong><small>/ 页起</small></div>
+            <div class="ten-page"><span>10 页参考价</span><strong>¥990 <small>起</small></strong></div>
+            <ul><li>页面结构与文案层级梳理</li><li>逐页版式设计与信息图表</li><li>品牌色、字体与 Logo 适配</li><li>PPTX 可编辑源文件 + PDF</li></ul>
+            <div class="plan-terms"><span><b>2 轮修改</b>集中反馈与调整</span><span><b>3–5 个工作日</b>资料确认后起算</span></div>
+          </article>
+          <article class="price-card tilt">
+            <span class="plan-no">PLAN / 03</span><span class="plan-name">全案定制</span><span class="plan-en">SIGNATURE CUSTOM</span>
+            <p class="plan-desc">从散乱资料到完整演示，适合发布会、重要路演与学术答辩。</p>
+            <div class="price"><span class="currency">¥</span><strong>199</strong><small>/ 页起</small></div>
+            <div class="ten-page"><span>10 页参考价</span><strong>¥1,990 <small>起</small></strong></div>
+            <ul><li>演示叙事与逐页内容规划</li><li>原创视觉系统与关键页定制</li><li>复杂图表与重点信息可视化</li><li>源文件、预览稿与素材整理</li></ul>
+            <div class="plan-terms"><span><b>3 轮修改</b>分阶段确认方向</span><span><b>5–7 个工作日</b>资料确认后起算</span></div>
+          </article>
         </div>
         <div class="services-band reveal">
           <div>
-            <h3>每一版交付，<br>都带着<em>可靠的服务</em>。</h3>
-            <p>不只是生成文件，更是一套可以持续使用的表达能力。以下服务承诺，适用于所有方案。</p>
+            <h3>价格算得清楚，<br>交付也<em>明明白白。</em></h3>
+            <p>先确认页数、资料与设计深度，再锁定报价和排期。没有订阅，也不需要为用不到的页数付费。</p>
           </div>
           <ul class="services-list">
-            <li>标准 .pptx 全元素可编辑导出</li>
-            <li>多格式导出：PPTX / PDF / 图片 / 在线链接</li>
-            <li>品牌 Kit 一键套用：色、字体、Logo</li>
-            <li>文档导入：Word / PDF / Markdown / 文本</li>
-            <li>数据安全：内容加密、可随时删除</li>
-            <li>团队版专属客户支持与使用分析</li>
+            <li>所有档位均为 10 页起做，超出按同档单价累加</li>
+            <li>每页均含设计、校对与可编辑 PPTX 源文件</li>
+            <li>修改以已确认内容为范围，新增页面单独计费</li>
+            <li>交付周期自资料与需求全部确认后开始计算</li>
+            <li>复杂图表、定制插画与加急需求提前评估报价</li>
+            <li>最终价格以页数、资料完整度和设计复杂度为准</li>
           </ul>
         </div>
-        <div class="pricing-foot"><span>CONCEPT PLANS · 非售卖页面</span><span>价格仅作产品定位说明，服务以实际上线版本为准。</span></div>
+        <div class="pricing-foot"><span>PER PAGE · 10 PAGES MINIMUM</span><span>以上为常规需求参考价；特殊需求将在制作前确认，不产生未告知的附加费用。</span></div>
       </div>
     </section>
 
@@ -886,7 +947,7 @@
         <div class="faq-list reveal">
           <div class="faq-item open"><button class="faq-q" aria-expanded="true" aria-controls="faq-a1"><span class="faq-index">01</span><span class="faq-question">墨构生成的是真正的 PPT 文件吗？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a1"><div><p>墨构的产品方向是导出标准 .pptx 文件，文本、形状、图表与图片均可继续编辑，方便回到 PowerPoint、WPS 或 Keynote 继续工作。</p></div></div></div>
           <div class="faq-item"><button class="faq-q" aria-expanded="false" aria-controls="faq-a2"><span class="faq-index">02</span><span class="faq-question">我已经有内容文档，可以直接导入吗？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a2"><div><p>在产品设想中，墨构会支持 Word、PDF、Markdown 与纯文本输入：先提炼文档结构，再根据演示场景重组内容，而不是简单地把原文复制到页面中。</p></div></div></div>
-          <div class="faq-item"><button class="faq-q" aria-expanded="false" aria-controls="faq-a3"><span class="faq-index">03</span><span class="faq-question">能否保持公司的品牌字体与配色？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a3"><div><p>在方案设想中，专业版与团队版支持品牌 Kit：上传品牌色、字体和 Logo 后，新生成的演示会遵循品牌规范，团队模板也可以统一共享。</p></div></div></div>
+          <div class="faq-item"><button class="faq-q" aria-expanded="false" aria-controls="faq-a3"><span class="faq-index">03</span><span class="faq-question">能否保持公司的品牌字体与配色？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a3"><div><p>可以。专业设计与全案定制均包含品牌适配，会根据你提供的品牌色、字体和 Logo 统一页面视觉；全案定制还会建立一套贯穿全稿的专属视觉系统。</p></div></div></div>
           <div class="faq-item"><button class="faq-q" aria-expanded="false" aria-controls="faq-a4"><span class="faq-index">04</span><span class="faq-question">我的内容会被用于训练模型吗？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a4"><div><p>在产品设计中，文档与演示内容只用于完成生成请求，不会被用于模型训练；传输与存储都会加密，也可以随时删除数据。</p></div></div></div>
           <div class="faq-item"><button class="faq-q" aria-expanded="false" aria-controls="faq-a5"><span class="faq-index">05</span><span class="faq-question">这个网站可以直接使用墨构吗？</span><span class="faq-plus" aria-hidden="true">+</span></button><div class="faq-a" id="faq-a5"><div><p>不能。本页是墨构的产品概念介绍，不提供注册、在线生成或订阅服务。这里展示的是产品理念、能力方向与视觉语言；如果你想交流，欢迎写信至 hello@inkraft.studio。</p></div></div></div>
         </div>
