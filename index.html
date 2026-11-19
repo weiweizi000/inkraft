@@ -290,47 +290,36 @@
     .export-format { position: absolute; right: 14px; bottom: 12px; padding: 6px 8px; background: var(--ink); color: var(--acid); font-family: var(--mono); font-size: 8px; }
     .engine-foot { margin-top: 20px; display: flex; justify-content: space-between; color: #707a69; font-family: var(--mono); font-size: 8px; letter-spacing: 1px; }
 
-    /* Style lab */
-    .showcase-head { max-width: 750px; }
-    .style-lab { display: grid; grid-template-columns: 280px 1fr; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-    .style-tabs { border-right: 1px solid var(--line); }
-    .tab { width: 100%; min-height: 96px; padding: 20px 20px 20px 0; display: grid; grid-template-columns: 35px 1fr auto; gap: 10px; align-items: center; border: 0; border-bottom: 1px solid var(--line); background: transparent; text-align: left; transition: padding .25s, background .25s; }
-    .tab:last-child { border-bottom: 0; }
-    .tab:hover { padding-left: 10px; background: rgba(255,255,255,.35); }
-    .tab.active { padding-left: 12px; background: var(--acid); }
-    .tab-no { color: #858d7c; font-family: var(--display); font-size: 18px; font-style: italic; }
-    .tab-name { display: block; font-size: 14px; font-weight: 750; }
-    .tab-en { margin-top: 6px; display: block; color: #7c8474; font-family: var(--mono); font-size: 7px; letter-spacing: .8px; }
-    .tab-arrow { font-size: 18px; opacity: 0; transform: translateX(-5px); transition: .2s; }
-    .tab.active .tab-arrow { opacity: 1; transform: none; }
-    .style-stage-wrap { min-width: 0; padding: 28px 0 28px 28px; }
-    .stage-toolbar { margin-bottom: 16px; display: flex; justify-content: space-between; color: #7e8577; font-family: var(--mono); font-size: 8px; letter-spacing: .7px; }
-    .stage { position: relative; min-height: 460px; padding: 45px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #dedfd5; }
-    .stage::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(17,19,15,.16) .65px,transparent .65px); background-size: 14px 14px; }
-    .demo-slide { position: relative; width: min(750px,94%); aspect-ratio: 16/9; padding: 43px 46px; overflow: hidden; background: #fffef9; box-shadow: 0 25px 65px rgba(34,39,29,.22); transition: opacity .2s, transform .25s, background .35s; }
-    .demo-slide .ds-kicker { position: relative; z-index: 2; color: #737b6b; font-family: var(--mono); font-size: 8px; letter-spacing: 2px; }
-    .demo-slide h3 { position: relative; z-index: 2; width: 68%; margin: 42px 0 18px; font-size: 39px; letter-spacing: -2px; line-height: 1.15; }
-    .demo-slide p { position: relative; z-index: 2; width: 48%; margin: 0; color: #798171; font-size: 11px; line-height: 1.8; }
-    .demo-slide .ds-page { position: absolute; bottom: 23px; left: 46px; z-index: 2; font-family: var(--display); font-size: 12px; font-style: italic; }
-    .ds-art { position: absolute; right: -5%; bottom: -25%; width: 48%; aspect-ratio: 1; border-radius: 50%; background: var(--acid); transition: .4s; }
-    .ds-art::before { content: ""; position: absolute; inset: 15%; border: 1px solid rgba(17,19,15,.3); border-radius: 50%; }
-    .ds-art::after { content: ""; position: absolute; inset: 32%; border-radius: 50%; background: var(--ink); }
-    .demo-slide[data-theme="launch"] { background: #151713; color: var(--white); }
-    .demo-slide[data-theme="launch"] .ds-kicker { color: var(--acid); }
-    .demo-slide[data-theme="launch"] .ds-art { right: -9%; bottom: -35%; border-radius: 0; background: var(--blue); transform: rotate(25deg); }
-    .demo-slide[data-theme="launch"] .ds-art::before { border-radius: 0; }
-    .demo-slide[data-theme="launch"] .ds-art::after { border-radius: 0; background: var(--acid); }
-    .demo-slide[data-theme="launch"] p { color: #a1aa99; }
-    .demo-slide[data-theme="academic"] { background: #f5f0e4; color: #26354b; }
-    .demo-slide[data-theme="academic"] h3 { font-family: var(--serif); font-weight: 400; }
-    .demo-slide[data-theme="academic"] .ds-art { right: 7%; bottom: 13%; width: 30%; aspect-ratio: 1.3; border: 2px solid #26354b; border-radius: 0; background: transparent; }
-    .demo-slide[data-theme="academic"] .ds-art::before { inset: 12%; border-color: #26354b; border-radius: 0; }
-    .demo-slide[data-theme="academic"] .ds-art::after { inset: 30%; border-radius: 0; background: #b95d43; }
-    .demo-slide.is-changing { opacity: 0; transform: translateY(8px) scale(.99); }
-    .stage-caption { margin-top: 16px; display: flex; justify-content: space-between; color: #777f70; font-size: 10px; line-height: 1.6; }
-    .stage-controls { display: flex; gap: 7px; }
-    .stage-controls button { width: 30px; height: 28px; border: 1px solid var(--line); background: transparent; transition: background .2s; }
-    .stage-controls button:hover { background: var(--acid); }
+    /* Video showcase */
+    .showcase-head { max-width: 790px; }
+    .demo-gallery { padding-top: 18px; border-top: 1px solid #3b4235; }
+    .demo-gallery-head { margin-bottom: 20px; display: flex; justify-content: space-between; gap: 20px; color: #818b77; font-family: var(--mono); font-size: 8px; letter-spacing: 1.2px; }
+    .demo-gallery-head span:first-child { color: var(--acid); }
+    .video-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+    .video-card { min-width: 0; overflow: hidden; border: 1px solid #394032; background: #171a15; transition: transform .35s var(--ease), border-color .25s, box-shadow .35s var(--ease); }
+    .video-card:hover { border-color: #69765a; transform: translateY(-6px); box-shadow: 0 22px 50px rgba(0,0,0,.22); }
+    .video-card.is-playing { border-color: var(--acid); box-shadow: 0 0 0 1px rgba(215,255,99,.13); }
+    .video-window-bar { height: 35px; padding: 0 12px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 11px; border-bottom: 1px solid #30372b; color: #7d8873; font-family: var(--mono); font-size: 7px; }
+    .window-dots { display: flex; gap: 4px; }
+    .window-dots i { width: 5px; height: 5px; border-radius: 50%; background: #4a5343; }
+    .window-dots i:first-child { background: var(--acid); }
+    .video-file { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .video-index { color: #a2ad96; }
+    .video-frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: #090b08; }
+    .video-frame::after { content: ""; position: absolute; inset: 0; z-index: 2; border: 1px solid rgba(255,255,255,.04); pointer-events: none; }
+    .video-frame video { width: 100%; height: 100%; display: block; object-fit: cover; background: #090b08; }
+    .video-play { position: absolute; top: 50%; left: 50%; z-index: 4; width: 56px; height: 56px; margin: -28px 0 0 -28px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 50%; background: var(--acid); color: var(--ink); box-shadow: 0 8px 25px rgba(0,0,0,.22); transition: opacity .2s, transform .25s var(--ease), box-shadow .2s; }
+    .video-play svg { width: 21px; height: 21px; margin-left: 2px; }
+    .video-play:hover { transform: scale(1.1); box-shadow: 0 10px 32px rgba(0,0,0,.34); }
+    .video-card.is-playing .video-play { opacity: 0; pointer-events: none; transform: scale(.75); }
+    .video-duration { position: absolute; top: 11px; right: 11px; z-index: 3; padding: 5px 7px; background: rgba(17,19,15,.78); color: var(--white); font-family: var(--mono); font-size: 7px; letter-spacing: .5px; pointer-events: none; transition: opacity .2s; }
+    .video-card.is-playing .video-duration { opacity: 0; }
+    .video-info { padding: 20px 19px 21px; }
+    .video-tag { color: var(--acid); font-family: var(--mono); font-size: 7px; letter-spacing: 1px; }
+    .video-info h3 { margin: 10px 0 9px; color: var(--white); font-size: 17px; font-weight: 650; letter-spacing: -.4px; }
+    .video-info p { margin: 0; color: #99a28f; font-size: 10px; line-height: 1.8; }
+    .demo-note { margin-top: 18px; display: flex; justify-content: space-between; gap: 20px; color: #7c8672; font-size: 9px; line-height: 1.7; }
+    .demo-note span:last-child { font-family: var(--mono); font-size: 8px; letter-spacing: .8px; }
 
     /* Pricing */
     .pricing { border-top: 1px solid var(--line); background: #eae9e0; }
@@ -502,10 +491,6 @@
     .style-spectrum span:nth-child(2) { transform: rotate(2deg); }
     .principle:hover .style-spectrum span { border-color: #9ba58f; }
 
-    /* Demo progress bar */
-    .demo-progress { height: 2px; margin-top: 16px; background: var(--paper-deep); overflow: hidden; }
-    .demo-progress i { display: block; height: 100%; width: 100%; background: var(--ink); transform: scaleX(0); transform-origin: left; }
-    .style-lab.is-paused .demo-progress i { animation-play-state: paused; }
 
     /* Services band inside pricing */
     .services-band { position: relative; margin-top: 58px; padding: 40px; border: 1px solid var(--ink); background: var(--white); display: grid; grid-template-columns: .9fr 1.5fr; gap: 44px; align-items: stretch; }
@@ -523,7 +508,6 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes watermarkDrift { 50% { transform: translateY(-20px) scale(1.03); } }
     @keyframes strikeIn { from { transform: scaleX(0) rotate(-2.5deg); } to { transform: scaleX(1) rotate(-2.5deg); } }
-    @keyframes demoFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
     /* Responsive refinements */
     @media (max-width: 1120px) {
@@ -535,9 +519,8 @@
       .product-composition { width: calc(100% - 45px); margin: 0 0 0 25px; }
       .product-window { min-width: 0; }
       .hero-bottom { margin-top: 50px; }
-      .style-stage-wrap { padding-left: 22px; }
-      .stage { min-height: 400px; padding: 30px; }
-      .demo-slide h3 { font-size: 32px; }
+      .video-grid { gap: 13px; }
+      .video-info { padding-inline: 16px; }
     }
     @media (max-width: 860px) {
       .container { width: min(var(--max),calc(100% - 40px)); }
@@ -559,12 +542,12 @@
       .engine-board { grid-template-columns: 1fr; }
       .engine-card.story-card, .engine-card.style-card { min-height: 520px; }
       .asset-card, .export-card { min-height: 330px; }
-      .style-lab { grid-template-columns: 210px 1fr; }
-      .stage { min-height: 350px; padding: 25px 15px; }
-      .demo-slide { padding: 30px; }
-      .demo-slide h3 { margin-top: 30px; font-size: 27px; }
-      .demo-slide p { font-size: 9px; }
-      .demo-slide .ds-page { left: 30px; bottom: 18px; }
+      .video-grid { gap: 11px; }
+      .video-info { padding: 17px 14px; }
+      .video-info h3 { font-size: 15px; }
+      .video-info p { font-size: 9px; }
+      .video-window-bar { padding-inline: 9px; gap: 7px; font-size: 6px; }
+      .video-play { width: 48px; height: 48px; margin: -24px 0 0 -24px; }
       .billing-strip { gap: 18px; flex-wrap: wrap; }
       .billing-strip .billing-lead { width: 100%; }
       .price-card { padding: 25px 22px; }
@@ -664,21 +647,15 @@
       .asset-grid, .export-canvas { right: 22px; bottom: 22px; left: 22px; }
       .engine-foot { line-height: 1.6; }
       .engine-foot span:last-child { display: none; }
-      .style-lab { display: flex; flex-direction: column; }
-      .style-tabs { display: grid; grid-template-columns: repeat(3,1fr); border-right: 0; border-bottom: 1px solid var(--ink); }
-      .tab { min-height: 76px; padding: 13px 8px; display: block; border-right: 1px solid var(--line); border-bottom: 0; text-align: center; }
-      .tab:last-child { border-right: 0; }
-      .tab:hover, .tab.active { padding-left: 8px; }
-      .tab-no, .tab-arrow, .tab-en { display: none; }
-      .tab-name { font-size: 11px; }
-      .style-stage-wrap { padding: 20px 0; }
-      .stage { min-height: 290px; padding: 24px 10px; }
-      .demo-slide { width: 96%; padding: 23px; }
-      .demo-slide h3 { margin: 23px 0 13px; font-size: 24px; letter-spacing: -1.2px; }
-      .demo-slide p { font-size: 7px; }
-      .demo-slide .ds-kicker { font-size: 6px; letter-spacing: 1px; }
-      .demo-slide .ds-page { bottom: 13px; left: 23px; font-size: 8px; }
-      .stage-caption { font-size: 8px; }
+      .demo-gallery-head { font-size: 6px; letter-spacing: .7px; }
+      .video-grid { grid-template-columns: 1fr; gap: 18px; }
+      .video-card:hover { transform: none; }
+      .video-window-bar { height: 38px; padding-inline: 12px; font-size: 7px; }
+      .video-play { width: 56px; height: 56px; margin: -28px 0 0 -28px; }
+      .video-info { padding: 20px; }
+      .video-info h3 { font-size: 18px; }
+      .video-info p { font-size: 11px; }
+      .demo-note { flex-direction: column; gap: 5px; }
       .billing-strip { margin-top: -10px; margin-bottom: 30px; gap: 12px 20px; }
       .billing-strip span { font-size: 10px; }
       .price-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -889,20 +866,40 @@
 
     <section class="section" id="demo" aria-labelledby="demoTitle">
       <div class="container">
-        <div class="section-head reveal"><div class="showcase-head"><span class="kicker">04 — 产品演示 / PRODUCT DEMO</span><h2 id="demoTitle">同一个想法，<br>不止一种<em>表达。</em></h2></div><p>这是墨构的实时演示：选择不同场景，看同一份内容如何被重构为全新的视觉语言。内容不变，表达的语气随之改变。</p></div>
-        <div class="style-lab reveal">
-          <div class="style-tabs" role="tablist" aria-label="演示风格">
-            <button class="tab active" id="tab-board" data-theme="board" role="tab" aria-selected="true" aria-controls="stylePanel" tabindex="0"><span class="tab-no">01</span><span><span class="tab-name">董事会汇报</span><span class="tab-en">EXECUTIVE REVIEW</span></span><span class="tab-arrow">→</span></button>
-            <button class="tab" id="tab-launch" data-theme="launch" role="tab" aria-selected="false" aria-controls="stylePanel" tabindex="-1"><span class="tab-no">02</span><span><span class="tab-name">产品发布会</span><span class="tab-en">PRODUCT KEYNOTE</span></span><span class="tab-arrow">→</span></button>
-            <button class="tab" id="tab-academic" data-theme="academic" role="tab" aria-selected="false" aria-controls="stylePanel" tabindex="-1"><span class="tab-no">03</span><span><span class="tab-name">学术答辩</span><span class="tab-en">ACADEMIC DEFENSE</span></span><span class="tab-arrow">→</span></button>
-          </div>
-          <div class="style-stage-wrap" id="stylePanel" role="tabpanel" aria-labelledby="tab-board">
-            <div class="stage-toolbar"><span id="stageFile">Q4_BUSINESS_REVIEW.INK</span><span>16:9 / AUTO LAYOUT</span></div>
-            <div class="stage"><div class="demo-slide tilt" id="demoSlide" data-theme="board"><span class="ds-kicker" id="dsKicker">Q4 / BUSINESS REVIEW</span><h3 id="dsTitle">增长的背后，<br>是结构性的改变。</h3><p id="dsDesc">聚焦核心业务与关键指标，让每一个决策都有据可循。</p><div class="ds-art" aria-hidden="true"></div><span class="ds-page">inkraft / 01</span></div></div>
-            <div class="stage-caption"><span id="stageCaption">清晰、克制，让关键结论自然浮现。</span><div class="stage-controls"><button id="prevTheme" aria-label="上一种演示风格">←</button><button id="nextTheme" aria-label="下一种演示风格">→</button></div></div>
-            <div class="demo-progress" aria-hidden="true"><i id="demoProgress"></i></div>
+        <div class="section-head showcase-head reveal"><div><span class="kicker">04 — 产品演示 / PRODUCT SHOWCASE</span><h2 id="demoTitle">让风格，<br>真正<em>动起来。</em></h2></div><p>三段真实页面演示，呈现构图、转场与内容轮播的不同可能。点击小窗，看看思想如何在页面上获得节奏、层次与生命力。</p></div>
+        <div class="demo-gallery reveal">
+          <div class="demo-gallery-head"><span>REAL DECKS / MOTION STUDIES</span><span>03 WINDOWS · SOUNDLESS PREVIEW</span></div>
+          <div class="video-grid">
+            <article class="video-card">
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">016_Composition.mp4</span><span class="video-index">01</span></div>
+              <div class="video-frame">
+                <video controls playsinline preload="metadata" poster="assets/demo-016-poster.jpg" aria-label="构成与节奏演示视频"><source src="assets/demo-016.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
+                <button class="video-play" type="button" aria-label="播放：构成与节奏"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
+                <span class="video-duration">00:13</span>
+              </div>
+              <div class="video-info"><span class="video-tag">COMPOSITION / 构成</span><h3>层次与节奏</h3><p>灰阶人物与鲜明色块，在层叠和切换中建立清晰的视觉秩序。</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">Vertical_Morph.mp4</span><span class="video-index">02</span></div>
+              <div class="video-frame">
+                <video controls playsinline preload="metadata" poster="assets/demo-morph-poster.jpg" aria-label="平滑转场演示视频"><source src="assets/demo-morph.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
+                <button class="video-play" type="button" aria-label="播放：平滑转场"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
+                <span class="video-duration">00:11</span>
+              </div>
+              <div class="video-info"><span class="video-tag">MORPH / 转场</span><h3>让信息自然流动</h3><p>城市卡片与数字背景连续变形，让内容衔接更顺畅、更有方向感。</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">001_Character.mp4</span><span class="video-index">03</span></div>
+              <div class="video-frame">
+                <video controls playsinline preload="metadata" poster="assets/demo-001-poster.jpg" aria-label="角色轮播演示视频"><source src="assets/demo-001.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
+                <button class="video-play" type="button" aria-label="播放：角色轮播"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
+                <span class="video-duration">00:09</span>
+              </div>
+              <div class="video-info"><span class="video-tag">CAROUSEL / 轮播</span><h3>系列内容，有序登场</h3><p>人物、介绍与导航协同切换，让每一页重点鲜明，又彼此连贯。</p></div>
+            </article>
           </div>
         </div>
+        <div class="demo-note reveal"><span>点击播放按钮开始观看，可使用原生控制条暂停或全屏。</span><span>CLICK TO PLAY / SOUNDLESS</span></div>
       </div>
     </section>
 
@@ -1097,56 +1094,37 @@
 
     addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
-    // Style laboratory with mouse, previous/next and arrow-key controls.
-    const themes = {
-      board: { kicker: 'Q4 / BUSINESS REVIEW', title: '增长的背后，<br>是结构性的改变。', desc: '聚焦核心业务与关键指标，让每一个决策都有据可循。', file: 'Q4_BUSINESS_REVIEW.INK', caption: '清晰、克制，让关键结论自然浮现。' },
-      launch: { kicker: 'NEW PRODUCT / 2026', title: '重新定义，<br>下一次表达。', desc: '用更具冲击力的视觉，让产品价值在第一眼被感知。', file: 'PRODUCT_KEYNOTE_2026.INK', caption: '大胆、鲜明，让产品价值第一眼被感知。' },
-      academic: { kicker: 'RESEARCH / THESIS DEFENSE', title: '从研究问题，<br>走向可靠结论。', desc: '严谨组织研究逻辑与证据，让复杂论证清晰可循。', file: 'RESEARCH_DEFENSE.INK', caption: '理性、严谨，让论证逻辑与证据彼此呼应。' }
-    };
-    const themeKeys = Object.keys(themes);
-    let activeTheme = 0;
-    let themeChangeTimer;
-    function selectTheme(key, focusTab = false) {
-      activeTheme = themeKeys.indexOf(key);
-      const theme = themes[key];
-      $$('.tab').forEach(tab => {
-        const active = tab.dataset.theme === key;
-        tab.classList.toggle('active', active);
-        tab.setAttribute('aria-selected', String(active));
-        tab.tabIndex = active ? 0 : -1;
-        if (active) {
-          $('#stylePanel').setAttribute('aria-labelledby', tab.id);
-          if (focusTab) tab.focus();
-        }
+    // Real video previews: one playback at a time, paused when offscreen.
+    const videoCards = $$('.video-card');
+    videoCards.forEach(card => {
+      const video = $('video', card);
+      const playButton = $('.video-play', card);
+      const title = $('h3', card).textContent;
+      const syncState = () => {
+        card.classList.toggle('is-playing', !video.paused && !video.ended);
+        playButton.setAttribute('aria-label', `${video.ended ? '重新播放' : '播放'}：${title}`);
+      };
+      playButton.addEventListener('click', async () => {
+        videoCards.forEach(other => { if (other !== card) $('video', other).pause(); });
+        if (video.ended) video.currentTime = 0;
+        try { await video.play(); } catch (error) { showToast('视频暂时无法播放，请使用下方原生控制条重试。'); }
       });
-      const slide = $('#demoSlide');
-      clearTimeout(themeChangeTimer);
-      slide.classList.add('is-changing');
-      themeChangeTimer = setTimeout(() => {
-        slide.dataset.theme = key;
-        $('#dsKicker').textContent = theme.kicker;
-        $('#dsTitle').innerHTML = theme.title;
-        $('#dsDesc').textContent = theme.desc;
-        $('.ds-page').textContent = `inkraft / 0${activeTheme + 1}`;
-        $('#stageFile').textContent = theme.file;
-        $('#stageCaption').textContent = theme.caption;
-        slide.classList.remove('is-changing');
-      }, reducedMotion ? 0 : 180);
-    }
-    $$('.tab').forEach(tab => {
-      tab.addEventListener('click', () => selectTheme(tab.dataset.theme));
-      tab.addEventListener('keydown', event => {
-        if (!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp','Home','End'].includes(event.key)) return;
-        event.preventDefault();
-        let next = activeTheme;
-        if (event.key === 'Home') next = 0;
-        else if (event.key === 'End') next = themeKeys.length - 1;
-        else next = (activeTheme + (['ArrowRight','ArrowDown'].includes(event.key) ? 1 : -1) + themeKeys.length) % themeKeys.length;
-        selectTheme(themeKeys[next], true);
+      video.addEventListener('play', () => {
+        videoCards.forEach(other => { if (other !== card) $('video', other).pause(); });
+        syncState();
       });
+      video.addEventListener('pause', syncState);
+      video.addEventListener('ended', syncState);
     });
-    $('#prevTheme').addEventListener('click', () => selectTheme(themeKeys[(activeTheme - 1 + themeKeys.length) % themeKeys.length]));
-    $('#nextTheme').addEventListener('click', () => selectTheme(themeKeys[(activeTheme + 1) % themeKeys.length]));
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+        if (!entry.isIntersecting) $('video', entry.target).pause();
+      }), { threshold: .12 });
+      videoCards.forEach(card => videoObserver.observe(card));
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) videoCards.forEach(card => $('video', card).pause());
+    });
 
     $$('.faq-q').forEach(button => button.addEventListener('click', () => {
       const item = button.parentElement;
@@ -1177,7 +1155,7 @@
       $$('.reveal, .reveal-stagger, .reveal-blur').forEach(element => element.classList.add('visible'));
     }
 
-    // ————— Extra motion: cursor, magnetic, tilt, auto-play, count-up —————
+    // ————— Extra motion: cursor, magnetic, tilt, count-up —————
     const finePointer = matchMedia('(pointer:fine)').matches;
 
     // Custom cursor (desktop)
@@ -1186,7 +1164,7 @@
       let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
       addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; cursor.classList.add('on'); });
       (function tick() { cx += (tx - cx) * .2; cy += (ty - cy) * .2; cursor.style.transform = `translate(${cx}px,${cy}px)`; requestAnimationFrame(tick); })();
-      const hoverSel = 'a,button,.mini-slide,.tab,.faq-q,.price-card,.engine-card,.principle,.demo-slide,.origin-card,.contact-link';
+      const hoverSel = 'a,button,.mini-slide,.faq-q,.price-card,.engine-card,.principle,.origin-card,.contact-link';
       $$(hoverSel).forEach(el => {
         el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
         el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
@@ -1195,7 +1173,7 @@
 
     // Magnetic buttons + 3D tilt (desktop)
     if (!reducedMotion && finePointer) {
-      $$('.btn, .tab').forEach(el => el.classList.add('magnetic'));
+      $$('.btn').forEach(el => el.classList.add('magnetic'));
       $$('.magnetic').forEach(el => {
         el.addEventListener('pointermove', e => {
           const r = el.getBoundingClientRect();
@@ -1205,7 +1183,7 @@
         });
         el.addEventListener('pointerleave', () => { el.style.transform = ''; });
       });
-      $$('.price-card, .engine-card, .principle, .demo-slide, .origin-card').forEach(el => {
+      $$('.price-card, .engine-card, .principle, .origin-card').forEach(el => {
         el.addEventListener('pointermove', e => {
           const r = el.getBoundingClientRect();
           const px = (e.clientX - r.left) / r.width;
@@ -1228,30 +1206,10 @@
       comp.addEventListener('pointerleave', startHero);
     }
 
-    // Demo auto-advance with progress bar (pause on hover, restart on manual pick)
-    if (!reducedMotion) {
-      const lab = document.querySelector('.style-lab');
-      const bar = $('#demoProgress');
-      let demoTimer, demoPaused = false;
-      const run = () => {
-        clearTimeout(demoTimer);
-        bar.style.animation = 'none'; void bar.offsetWidth;
-        bar.style.animation = 'demoFill 6s linear forwards';
-        demoTimer = setTimeout(() => { selectTheme(themeKeys[(activeTheme + 1) % themeKeys.length]); run(); }, 6000);
-      };
-      run();
-      const pause = () => { demoPaused = true; clearTimeout(demoTimer); bar.style.animationPlayState = 'paused'; lab.classList.add('is-paused'); };
-      const resume = () => { if (!demoPaused) return; demoPaused = false; bar.style.animationPlayState = 'running'; run(); };
-      lab.addEventListener('pointerenter', pause);
-      lab.addEventListener('pointerleave', resume);
-      $('.style-tabs').addEventListener('click', () => { if (!demoPaused) run(); });
-      $('#prevTheme').addEventListener('click', () => { if (!demoPaused) run(); });
-      $('#nextTheme').addEventListener('click', () => { if (!demoPaused) run(); });
-    }
-
     // Count-up stats on scroll into view
     const animateCount = el => {
       const val = el.querySelector('.val');
+      if (!val) return;
       const target = Number(val.dataset.target) || 0;
       if (reducedMotion) { val.textContent = target; return; }
       const t0 = performance.now(), dur = 1500;
