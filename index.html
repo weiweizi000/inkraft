@@ -299,22 +299,16 @@
     .video-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
     .video-card { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); background: var(--white); transition: transform .35s var(--ease), border-color .25s, box-shadow .35s var(--ease); }
     .video-card:hover { border-color: #9aa392; transform: translateY(-6px); box-shadow: 8px 8px 0 rgba(17,19,15,.07); }
-    .video-card.is-playing { border-color: var(--ink); box-shadow: 4px 4px 0 rgba(17,19,15,.1); }
+    .video-card.is-live { border-color: var(--ink); box-shadow: 4px 4px 0 rgba(17,19,15,.1); }
     .video-window-bar { height: 36px; padding: 0 13px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 11px; border-bottom: 1px solid var(--line); color: var(--muted); font-family: var(--mono); font-size: 7px; letter-spacing: .6px; }
     .window-dots { display: flex; align-items: flex-end; gap: 3px; height: 10px; }
     .window-dots i { width: 3px; height: 10px; background: var(--ink); }
     .window-dots i:nth-child(2) { height: 6px; }
     .video-file { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .video-index { padding: 2px 5px; border: 1px solid var(--line); color: var(--ink); line-height: 1; transition: background .2s, border-color .2s; }
-    .video-card.is-playing .video-index { border-color: var(--ink); background: var(--acid); }
+    .video-card.is-live .video-index { border-color: var(--ink); background: var(--acid); }
     .video-frame { position: relative; aspect-ratio: 16/9; margin: 12px; overflow: hidden; border: 1px solid var(--ink); background: var(--ink); }
-    .video-frame video { width: 100%; height: 100%; display: block; object-fit: cover; background: var(--ink); }
-    .video-play { position: absolute; top: 50%; left: 50%; z-index: 4; width: 52px; height: 52px; margin: -26px 0 0 -26px; display: grid; place-items: center; border: 1px solid var(--ink); border-radius: 3px; background: var(--acid); color: var(--ink); box-shadow: 4px 4px 0 rgba(17,19,15,.28); transition: opacity .2s, transform .25s var(--ease), box-shadow .2s; }
-    .video-play svg { width: 20px; height: 20px; margin-left: 2px; }
-    .video-play:hover { transform: translate(-1px,-1px) scale(1.04); box-shadow: 6px 6px 0 rgba(17,19,15,.3); }
-    .video-card.is-playing .video-play { opacity: 0; pointer-events: none; transform: scale(.8); }
-    .video-duration { position: absolute; top: 9px; right: 9px; z-index: 3; padding: 4px 6px; border: 1px solid var(--ink); background: var(--paper); color: var(--ink); font-family: var(--mono); font-size: 7px; letter-spacing: .5px; pointer-events: none; transition: opacity .2s; }
-    .video-card.is-playing .video-duration { opacity: 0; }
+    .motion-frame { width: 100%; height: 100%; display: block; object-fit: cover; }
     .video-info { padding: 6px 13px 19px; }
     .video-tag { color: #63742f; font-family: var(--mono); font-size: 7px; letter-spacing: 1px; }
     .video-info h3 { margin: 10px 0 9px; color: var(--ink); font-size: 17px; font-weight: 700; letter-spacing: -.4px; }
@@ -547,7 +541,6 @@
       .video-info p { font-size: 10px; }
       .video-frame { margin: 10px; }
       .video-window-bar { padding-inline: 11px; gap: 7px; font-size: 6px; }
-      .video-play { width: 46px; height: 46px; margin: -23px 0 0 -23px; }
       .billing-strip { gap: 18px; flex-wrap: wrap; }
       .billing-strip .billing-lead { width: 100%; }
       .price-card { padding: 25px 22px; }
@@ -651,7 +644,6 @@
       .video-card:hover { transform: none; }
       .video-window-bar { height: 40px; padding-inline: 14px; font-size: 8px; }
       .video-frame { margin: 10px; }
-      .video-play { width: 46px; height: 46px; margin: -23px 0 0 -23px; }
       .video-info { padding: 6px 14px 20px; }
       .video-info h3 { font-size: 18px; }
       .video-info p { font-size: 11px; }
@@ -866,40 +858,28 @@
 
     <section class="section" id="demo" aria-labelledby="demoTitle">
       <div class="container">
-        <div class="section-head showcase-head reveal"><div><span class="kicker">04 — 产品演示 / PRODUCT SHOWCASE</span><h2 id="demoTitle">让风格，<br>真正<em>动起来。</em></h2></div><p>三段真实页面演示，呈现构图、转场与内容轮播的不同可能。点击小窗，看看思想如何在页面上获得节奏、层次与生命力。</p></div>
+        <div class="section-head showcase-head reveal"><div><span class="kicker">04 — 产品演示 / PRODUCT SHOWCASE</span><h2 id="demoTitle">让风格，<br>真正<em>动起来。</em></h2></div><p>三段真实页面演示，呈现构图、转场与内容轮播的不同可能。把小窗移入视野，看看思想如何在页面上获得节奏、层次与生命力。</p></div>
         <div class="demo-gallery reveal">
           <div class="demo-gallery-head"><span>REAL DECKS / MOTION STUDIES</span><span>03 WINDOWS · SOUNDLESS PREVIEW</span></div>
           <div class="video-grid">
             <article class="video-card">
-              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">016_Composition.mp4</span><span class="video-index">01</span></div>
-              <div class="video-frame">
-                <video controls playsinline preload="metadata" poster="assets/demo-016-poster.jpg" aria-label="构成与节奏演示视频"><source src="assets/demo-016.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
-                <button class="video-play" type="button" aria-label="播放：构成与节奏"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
-                <span class="video-duration">00:13</span>
-              </div>
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">016_Composition.webp</span><span class="video-index">01</span></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-016-poster.jpg" data-motion="assets/demo-016.webp" width="800" height="450" loading="lazy" decoding="async" alt="构成演示动图：灰阶人物与鲜明色块在层叠和切换中建立清晰的视觉秩序"></div>
               <div class="video-info"><span class="video-tag">COMPOSITION / 构成</span><h3>层次与节奏</h3><p>灰阶人物与鲜明色块，在层叠和切换中建立清晰的视觉秩序。</p></div>
             </article>
             <article class="video-card">
-              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">Vertical_Morph.mp4</span><span class="video-index">02</span></div>
-              <div class="video-frame">
-                <video controls playsinline preload="metadata" poster="assets/demo-morph-poster.jpg" aria-label="平滑转场演示视频"><source src="assets/demo-morph.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
-                <button class="video-play" type="button" aria-label="播放：平滑转场"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
-                <span class="video-duration">00:11</span>
-              </div>
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">Vertical_Morph.webp</span><span class="video-index">02</span></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-morph-poster.jpg" data-motion="assets/demo-morph.webp" width="800" height="450" loading="lazy" decoding="async" alt="转场演示动图：城市卡片与数字背景连续变形，让内容衔接更顺畅"></div>
               <div class="video-info"><span class="video-tag">MORPH / 转场</span><h3>让信息自然流动</h3><p>城市卡片与数字背景连续变形，让内容衔接更顺畅、更有方向感。</p></div>
             </article>
             <article class="video-card">
-              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">001_Character.mp4</span><span class="video-index">03</span></div>
-              <div class="video-frame">
-                <video controls playsinline preload="metadata" poster="assets/demo-001-poster.jpg" aria-label="角色轮播演示视频"><source src="assets/demo-001.mp4" type="video/mp4">你的浏览器不支持视频播放。</video>
-                <button class="video-play" type="button" aria-label="播放：角色轮播"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4.5 15 10l-8 5.5Z" fill="currentColor"/></svg></button>
-                <span class="video-duration">00:09</span>
-              </div>
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">001_Character.webp</span><span class="video-index">03</span></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-001-poster.jpg" data-motion="assets/demo-001.webp" width="800" height="450" loading="lazy" decoding="async" alt="轮播演示动图：人物、介绍与导航协同切换，每一页重点鲜明又彼此连贯"></div>
               <div class="video-info"><span class="video-tag">CAROUSEL / 轮播</span><h3>系列内容，有序登场</h3><p>人物、介绍与导航协同切换，让每一页重点鲜明，又彼此连贯。</p></div>
             </article>
           </div>
         </div>
-        <div class="demo-note reveal"><span>点击播放按钮开始观看，可使用原生控制条暂停或全屏。</span><span>CLICK TO PLAY / SOUNDLESS</span></div>
+        <div class="demo-note reveal"><span>鼠标移到小窗上即可播放，移开自动暂停；手机端滑动到小窗内会自动播放。</span><span>HOVER TO PLAY / SOUNDLESS</span></div>
       </div>
     </section>
 
@@ -1094,37 +1074,38 @@
 
     addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 
-    // Real video previews: one playback at a time, paused when offscreen.
-    const videoCards = $$('.video-card');
-    videoCards.forEach(card => {
-      const video = $('video', card);
-      const playButton = $('.video-play', card);
-      const title = $('h3', card).textContent;
-      const syncState = () => {
-        card.classList.toggle('is-playing', !video.paused && !video.ended);
-        playButton.setAttribute('aria-label', `${video.ended ? '重新播放' : '播放'}：${title}`);
+    // Motion previews: play on hover, or in view on touch screens.
+    const motionCards = $$('.video-card');
+    const motionHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    motionCards.forEach(card => {
+      const frame = $('.motion-frame', card);
+      const still = frame.getAttribute('src');
+      const motion = frame.dataset.motion;
+      card.startMotion = () => {
+        if (frame.getAttribute('src') === motion) return;
+        frame.setAttribute('src', motion);
+        card.classList.add('is-live');
       };
-      playButton.addEventListener('click', async () => {
-        videoCards.forEach(other => { if (other !== card) $('video', other).pause(); });
-        if (video.ended) video.currentTime = 0;
-        try { await video.play(); } catch (error) { showToast('视频暂时无法播放，请使用下方原生控制条重试。'); }
-      });
-      video.addEventListener('play', () => {
-        videoCards.forEach(other => { if (other !== card) $('video', other).pause(); });
-        syncState();
-      });
-      video.addEventListener('pause', syncState);
-      video.addEventListener('ended', syncState);
+      card.stopMotion = () => {
+        if (frame.getAttribute('src') !== motion) return;
+        frame.setAttribute('src', still);
+        card.classList.remove('is-live');
+      };
+      if (motionHover) {
+        card.addEventListener('mouseenter', card.startMotion);
+        card.addEventListener('mouseleave', card.stopMotion);
+      }
     });
-    if ('IntersectionObserver' in window) {
-      const videoObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (!entry.isIntersecting) $('video', entry.target).pause();
-      }), { threshold: .12 });
-      videoCards.forEach(card => videoObserver.observe(card));
+    if (!motionHover && 'IntersectionObserver' in window) {
+      const motionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.startMotion();
+        else entry.target.stopMotion();
+      }), { threshold: .4 });
+      motionCards.forEach(card => motionObserver.observe(card));
     }
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) videoCards.forEach(card => $('video', card).pause());
-    });
+    const warmMotion = () => motionCards.forEach(card => { new Image().src = $('.motion-frame', card).dataset.motion; });
+    if ('requestIdleCallback' in window) requestIdleCallback(warmMotion, { timeout: 3000 });
+    else addEventListener('load', warmMotion);
 
     $$('.faq-q').forEach(button => button.addEventListener('click', () => {
       const item = button.parentElement;
