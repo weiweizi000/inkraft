@@ -457,8 +457,8 @@
     @media (pointer: coarse) { .cursor { display: none; } }
 
     /* Boot veil: particle gather */
-    .boot { position: fixed; inset: 0; z-index: 500; overflow: hidden; background: var(--ink); animation: bootOut .8s 1.7s var(--ease) forwards; }
-    .boot.out { animation: bootOut .8s var(--ease) forwards; }
+    .boot { position: fixed; inset: 0; z-index: 500; overflow: hidden; background: var(--ink); animation: bootOut 1s 3.2s var(--ease) forwards; }
+    .boot.out { animation: bootOut 1s var(--ease) forwards; }
     .boot.done { display: none; }
     .boot-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
     .boot-word { position: absolute; bottom: 38px; left: 50%; color: #79816f; font-family: var(--mono); font-size: 8px; letter-spacing: 4px; transform: translateX(-50%); }
@@ -1078,57 +1078,106 @@
     const navLinks = $('#navLinks');
     const toast = $('#toast');
     let toastTimer;
-    // Boot particles: acid points gather into the brand bars, then lift away
+    // Boot sequence: burst, trailing particles, re-gather into the brand bars, scan line
     (() => {
       const veil = $('.boot');
       if (!veil) return;
       if (reducedMotion) { veil.classList.add('done'); return; }
       const canvas = $('.boot-canvas', veil);
       const ctx = canvas && canvas.getContext('2d');
+      const word = $('.boot-word', veil);
       if (!ctx) { veil.classList.add('done'); return; }
       const dpr = Math.min(devicePixelRatio || 1, 2);
       const w = innerWidth, h = innerHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.scale(dpr, dpr);
+      const cx = w / 2, cy = h / 2;
       const bars = [[-52, 38], [-14, 22], [24, 38]];
       const targets = [];
       bars.forEach(([ox, bh]) => {
-        for (let y = -bh / 2; y <= bh / 2; y += 3.4) {
-          for (let x = 0; x < 13; x += 4.2) targets.push([ox + x, y]);
+        for (let y = -bh / 2; y <= bh / 2; y += 3.2) {
+          for (let x = 0; x < 13; x += 4) targets.push([cx + ox + x, cy + y]);
         }
       });
-      const cx = w / 2, cy = h / 2;
-      const dots = targets.map(([ox, oy]) => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        tx: cx + ox,
-        ty: cy + oy,
-        a: .16 + Math.random() * .5,
-        s: .8 + Math.random() * 1.3,
-        acid: Math.random() > .2
-      }));
+      const dots = targets.map(([tx, ty], i) => {
+        const angle = (i / targets.length) * Math.PI * 2 + Math.random() * .5;
+        const speed = 3 + Math.random() * 9;
+        return {
+          x: cx + (Math.random() - .5) * 12,
+          y: cy + (Math.random() - .5) * 12,
+          px: cx,
+          py: cy,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          tx,
+          ty,
+          s: .8 + Math.random() * 1.5,
+          acid: Math.random() > .18,
+          jitter: Math.random() * Math.PI * 2
+        };
+      });
       const start = performance.now();
+      const DUR = 2200;
       const paint = now => {
-        const t = Math.min((now - start) / 900, 1);
-        const ease = 1 - Math.pow(1 - t, 3);
-        ctx.clearRect(0, 0, w, h);
+        const t = now - start;
+        ctx.fillStyle = `rgba(17,19,15,${t > 1740 ? .5 : .18})`;
+        ctx.fillRect(0, 0, w, h);
+        ctx.lineCap = 'round';
         dots.forEach(d => {
-          d.x += (d.tx - d.x) * (.05 + ease * .17);
-          d.y += (d.ty - d.y) * (.05 + ease * .17);
-          ctx.globalAlpha = d.a + ease * .35;
-          ctx.fillStyle = d.acid ? '#d7ff63' : '#fffef9';
-          ctx.fillRect(d.x, d.y, d.s, d.s);
+          d.px = d.x;
+          d.py = d.y;
+          if (t < 780) {
+            d.x += d.vx;
+            d.y += d.vy;
+            d.vx *= .965;
+            d.vy *= .965;
+          } else if (t < 1820) {
+            const k = .035 + ((t - 780) / 1040) * .11;
+            d.x += (d.tx - d.x) * k;
+            d.y += (d.ty - d.y) * k;
+          } else {
+            d.x = d.tx + Math.cos(d.jitter + t * .006) * .8;
+            d.y = d.ty + Math.sin(d.jitter + t * .006) * .8;
+          }
+          ctx.globalAlpha = t < 780 ? .5 : .88;
+          ctx.strokeStyle = d.acid ? '#d7ff63' : '#fffef9';
+          ctx.lineWidth = d.s;
+          ctx.beginPath();
+          ctx.moveTo(d.px, d.py);
+          ctx.lineTo(d.x, d.y);
+          ctx.stroke();
         });
-        if (t < 1) requestAnimationFrame(paint);
-        else {
-          setTimeout(() => veil.classList.add('out'), 220);
-          setTimeout(() => veil.classList.add('done'), 1200);
+        if (t < 1000) {
+          const p = t / 1000;
+          const r = 10 + p * Math.min(w, h) * .45;
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+          g.addColorStop(0, `rgba(215,255,99,${.28 * (1 - p)})`);
+          g.addColorStop(1, 'rgba(215,255,99,0)');
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.fill();
         }
+        if (t > 1740 && t < DUR) {
+          const y = ((t - 1740) / (DUR - 1740)) * h;
+          const g = ctx.createLinearGradient(0, y - 26, 0, y + 26);
+          g.addColorStop(0, 'rgba(215,255,99,0)');
+          g.addColorStop(.5, 'rgba(215,255,99,.5)');
+          g.addColorStop(1, 'rgba(215,255,99,0)');
+          ctx.globalAlpha = 1;
+          ctx.fillStyle = g;
+          ctx.fillRect(0, y - 26, w, 52);
+        }
+        if (word) word.textContent = t < 1820 ? `INKRAFT / ${String(Math.min(99, Math.round(t / 1820 * 99))).padStart(3, '0')}` : 'INKRAFT / READY';
+        if (t < DUR) { requestAnimationFrame(paint); return; }
+        veil.classList.add('out');
+        setTimeout(() => veil.classList.add('done'), 1500);
       };
       requestAnimationFrame(paint);
     })();
-    setTimeout(() => { const veil = $('.boot'); if (veil) veil.classList.add('done'); }, 2800);
+    setTimeout(() => { const veil = $('.boot'); if (veil) veil.classList.add('done'); }, 4400);
 
     function showToast(message) {
       clearTimeout(toastTimer);
