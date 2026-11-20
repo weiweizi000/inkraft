@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#11130f">
   <title>墨构 inkraft — 原生 PPT 制作引擎</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2311130f'/%3E%3Cpath d='M17 15h9v34h-9zm12 0h9v22h-9zm12 0h9v34h-9z' fill='%23d7ff63'/%3E%3C/svg%3E">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.add('js', 'intro-wait');</script>
   <style>
     :root {
       --ink: #11130f;
@@ -60,7 +60,7 @@
     .scroll-progress { position: fixed; inset: 0 0 auto; z-index: 110; height: 2px; background: linear-gradient(90deg,#b7e23f,var(--acid),#f4ffc4); box-shadow: 0 0 14px rgba(215,255,99,.85); transform: scaleX(0); transform-origin: left; }
 
     /* Navigation */
-    .nav-wrap { position: fixed; inset: 0 0 auto; z-index: 60; padding: 18px 0; transition: padding .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
+    .nav-wrap { position: fixed; inset: 0 0 auto; z-index: 60; padding: 18px 0; transition: opacity .9s var(--ease), padding .3s ease, transform .35s cubic-bezier(.22,1,.36,1); }
     .nav-wrap.nav-hidden { transform: translateY(-125%); }
     .nav-wrap:not(.scrolled) .brand { color: var(--white); }
     .nav-wrap:not(.scrolled) .brand em { color: #939d8b; }
@@ -462,7 +462,16 @@
     .boot.done { display: none; }
     .boot-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
     .boot-word { position: absolute; bottom: 38px; left: 50%; color: #79816f; font-family: var(--mono); font-size: 8px; letter-spacing: 4px; transform: translateX(-50%); }
-    @keyframes bootOut { to { clip-path: inset(0 0 100% 0); opacity: 0; visibility: hidden; } }
+    @keyframes bootOut {
+      0% { opacity: 1; transform: scale(1); filter: blur(0); }
+      100% { opacity: 0; transform: scale(1.045); filter: blur(11px); visibility: hidden; }
+    }
+
+    /* Intro hand-off: page floats up while the veil dissolves */
+    .hero .container { transition: opacity 1.2s var(--ease), transform 1.3s var(--ease), filter 1.1s var(--ease); }
+    .intro-wait .hero .container { opacity: 0; transform: translateY(22px) scale(.994); filter: blur(7px); }
+    .intro-wait .hero * { animation-play-state: paused !important; }
+    .intro-wait .nav-wrap { opacity: 0; }
 
     /* Click ripple */
     .tap-ripple { position: fixed; z-index: 450; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; border: 1px solid var(--acid); box-shadow: 0 0 14px rgba(215,255,99,.4); pointer-events: none; animation: tapOut .7s var(--ease) forwards; }
@@ -1082,11 +1091,11 @@
     (() => {
       const veil = $('.boot');
       if (!veil) return;
-      if (reducedMotion) { veil.classList.add('done'); return; }
+      if (reducedMotion) { veil.classList.add('done'); document.documentElement.classList.remove('intro-wait'); return; }
       const canvas = $('.boot-canvas', veil);
       const ctx = canvas && canvas.getContext('2d');
       const word = $('.boot-word', veil);
-      if (!ctx) { veil.classList.add('done'); return; }
+      if (!ctx) { veil.classList.add('done'); document.documentElement.classList.remove('intro-wait'); return; }
       const dpr = Math.min(devicePixelRatio || 1, 2);
       const w = innerWidth, h = innerHeight;
       canvas.width = w * dpr;
@@ -1143,13 +1152,22 @@
           ctx.fill();
         });
         if (word) word.textContent = t < DUR ? `INKRAFT / ${String(Math.min(99, Math.round(p * 99))).padStart(3, '0')}` : 'INKRAFT / READY';
-        if (t < DUR) { requestAnimationFrame(paint); return; }
+        if (t < DUR) {
+          if (t > DUR - 180) document.documentElement.classList.remove('intro-wait');
+          requestAnimationFrame(paint);
+          return;
+        }
+        document.documentElement.classList.remove('intro-wait');
         veil.classList.add('out');
         setTimeout(() => veil.classList.add('done'), 1400);
       };
       requestAnimationFrame(paint);
     })();
-    setTimeout(() => { const veil = $('.boot'); if (veil) veil.classList.add('done'); }, 5200);
+    setTimeout(() => {
+      const veil = $('.boot');
+      if (veil) veil.classList.add('done');
+      document.documentElement.classList.remove('intro-wait');
+    }, 5200);
 
     function showToast(message) {
       clearTimeout(toastTimer);
