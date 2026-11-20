@@ -456,16 +456,12 @@
     .cursor.grow::before { opacity: 1; inset: -4px; }
     @media (pointer: coarse) { .cursor { display: none; } }
 
-    /* Boot veil */
-    .boot { position: fixed; inset: 0; z-index: 500; display: grid; place-items: center; background: var(--ink); animation: bootOut .85s .45s var(--ease) forwards; }
+    /* Boot veil: particle gather */
+    .boot { position: fixed; inset: 0; z-index: 500; overflow: hidden; background: var(--ink); animation: bootOut .8s 1.7s var(--ease) forwards; }
+    .boot.out { animation: bootOut .8s var(--ease) forwards; }
     .boot.done { display: none; }
-    .boot-inner { display: grid; justify-items: center; gap: 20px; }
-    .boot-mark { display: flex; align-items: flex-end; gap: 6px; height: 48px; }
-    .boot-mark i { width: 11px; height: 48px; background: var(--acid); animation: bootBar .8s var(--ease) both; }
-    .boot-mark i:nth-child(2) { height: 28px; animation-delay: .12s; }
-    .boot-mark i:nth-child(3) { animation-delay: .24s; }
-    .boot-word { color: #79816f; font-family: var(--mono); font-size: 8px; letter-spacing: 4px; }
-    @keyframes bootBar { from { transform: scaleY(.1); transform-origin: bottom; opacity: 0; } }
+    .boot-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .boot-word { position: absolute; bottom: 38px; left: 50%; color: #79816f; font-family: var(--mono); font-size: 8px; letter-spacing: 4px; transform: translateX(-50%); }
     @keyframes bootOut { to { clip-path: inset(0 0 100% 0); opacity: 0; visibility: hidden; } }
 
     /* Click ripple */
@@ -796,7 +792,7 @@
   </style>
 </head>
 <body>
-  <div class="boot" aria-hidden="true"><div class="boot-inner"><div class="boot-mark"><i></i><i></i><i></i></div><span class="boot-word">INKRAFT / LOADING</span></div></div>
+  <div class="boot" aria-hidden="true"><canvas class="boot-canvas"></canvas><span class="boot-word">INKRAFT / LOADING</span></div>
   <a class="skip-link" href="#main">跳至主要内容</a>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
   <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -1082,8 +1078,57 @@
     const navLinks = $('#navLinks');
     const toast = $('#toast');
     let toastTimer;
-    const boot = $('.boot');
-    if (boot) setTimeout(() => boot.classList.add('done'), 1600);
+    // Boot particles: acid points gather into the brand bars, then lift away
+    (() => {
+      const veil = $('.boot');
+      if (!veil) return;
+      if (reducedMotion) { veil.classList.add('done'); return; }
+      const canvas = $('.boot-canvas', veil);
+      const ctx = canvas && canvas.getContext('2d');
+      if (!ctx) { veil.classList.add('done'); return; }
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      const w = innerWidth, h = innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.scale(dpr, dpr);
+      const bars = [[-52, 38], [-14, 22], [24, 38]];
+      const targets = [];
+      bars.forEach(([ox, bh]) => {
+        for (let y = -bh / 2; y <= bh / 2; y += 3.4) {
+          for (let x = 0; x < 13; x += 4.2) targets.push([ox + x, y]);
+        }
+      });
+      const cx = w / 2, cy = h / 2;
+      const dots = targets.map(([ox, oy]) => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        tx: cx + ox,
+        ty: cy + oy,
+        a: .16 + Math.random() * .5,
+        s: .8 + Math.random() * 1.3,
+        acid: Math.random() > .2
+      }));
+      const start = performance.now();
+      const paint = now => {
+        const t = Math.min((now - start) / 900, 1);
+        const ease = 1 - Math.pow(1 - t, 3);
+        ctx.clearRect(0, 0, w, h);
+        dots.forEach(d => {
+          d.x += (d.tx - d.x) * (.05 + ease * .17);
+          d.y += (d.ty - d.y) * (.05 + ease * .17);
+          ctx.globalAlpha = d.a + ease * .35;
+          ctx.fillStyle = d.acid ? '#d7ff63' : '#fffef9';
+          ctx.fillRect(d.x, d.y, d.s, d.s);
+        });
+        if (t < 1) requestAnimationFrame(paint);
+        else {
+          setTimeout(() => veil.classList.add('out'), 220);
+          setTimeout(() => veil.classList.add('done'), 1200);
+        }
+      };
+      requestAnimationFrame(paint);
+    })();
+    setTimeout(() => { const veil = $('.boot'); if (veil) veil.classList.add('done'); }, 2800);
 
     function showToast(message) {
       clearTimeout(toastTimer);
@@ -1211,16 +1256,32 @@
         card.addEventListener('mouseleave', card.stopMotion);
       }
     });
-    if (!motionHover && 'IntersectionObserver' in window) {
-      const motionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.startMotion();
-        else entry.target.stopMotion();
-      }), { threshold: .4 });
-      motionCards.forEach(card => motionObserver.observe(card));
+    // Touch screens: play only when the card sits inside the middle of the viewport.
+    if (!motionHover && !reducedMotion && 'IntersectionObserver' in window) {
+      const saveData = navigator.connection && navigator.connection.saveData;
+      if (!saveData) {
+        const motionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+          const card = entry.target;
+          clearTimeout(card.motionDelay);
+          if (entry.isIntersecting) card.motionDelay = setTimeout(card.startMotion, 140);
+          else card.stopMotion();
+        }), { rootMargin: '-16% 0px -28% 0px', threshold: 0 });
+        motionCards.forEach(card => motionObserver.observe(card));
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) return motionCards.forEach(card => card.stopMotion());
+          motionCards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            if (rect.top < innerHeight * .72 && rect.bottom > innerHeight * .16) card.startMotion();
+          });
+        });
+      }
     }
-    const warmMotion = () => motionCards.forEach(card => { new Image().src = $('.motion-frame', card).dataset.motion; });
-    if ('requestIdleCallback' in window) requestIdleCallback(warmMotion, { timeout: 3000 });
-    else addEventListener('load', warmMotion);
+    // Warm the animated frames ahead of time on desktop
+    if (motionHover) {
+      const warmMotion = () => motionCards.forEach(card => { new Image().src = $('.motion-frame', card).dataset.motion; });
+      if ('requestIdleCallback' in window) requestIdleCallback(warmMotion, { timeout: 3000 });
+      else addEventListener('load', warmMotion);
+    }
 
     $$('.faq-q').forEach(button => button.addEventListener('click', () => {
       const item = button.parentElement;
