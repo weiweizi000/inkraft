@@ -977,17 +977,17 @@
           <div class="video-grid">
             <article class="video-card">
               <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">016_Composition.webp</span><span class="video-index">01</span></div>
-              <div class="video-frame"><img class="motion-frame" src="assets/demo-016-poster.jpg" data-motion="assets/demo-016.webp" width="800" height="450" loading="lazy" decoding="async" alt="构成演示动图：灰阶人物与鲜明色块在层叠和切换中建立清晰的视觉秩序"></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-016-poster.jpg" data-motion="assets/demo-016.webp" data-motion-mobile="assets/demo-016-m.webp" width="800" height="450" loading="lazy" decoding="async" alt="构成演示动图：灰阶人物与鲜明色块在层叠和切换中建立清晰的视觉秩序"></div>
               <div class="video-info"><span class="video-tag">COMPOSITION / 构成</span><h3>层次与节奏</h3><p>灰阶人物与鲜明色块，在层叠和切换中建立清晰的视觉秩序。</p></div>
             </article>
             <article class="video-card">
               <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">Vertical_Morph.webp</span><span class="video-index">02</span></div>
-              <div class="video-frame"><img class="motion-frame" src="assets/demo-morph-poster.jpg" data-motion="assets/demo-morph.webp" width="800" height="450" loading="lazy" decoding="async" alt="转场演示动图：城市卡片与数字背景连续变形，让内容衔接更顺畅"></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-morph-poster.jpg" data-motion="assets/demo-morph.webp" data-motion-mobile="assets/demo-morph-m.webp" width="800" height="450" loading="lazy" decoding="async" alt="转场演示动图：城市卡片与数字背景连续变形，让内容衔接更顺畅"></div>
               <div class="video-info"><span class="video-tag">MORPH / 转场</span><h3>让信息自然流动</h3><p>城市卡片与数字背景连续变形，让内容衔接更顺畅、更有方向感。</p></div>
             </article>
             <article class="video-card">
               <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">001_Character.webp</span><span class="video-index">03</span></div>
-              <div class="video-frame"><img class="motion-frame" src="assets/demo-001-poster.jpg" data-motion="assets/demo-001.webp" width="800" height="450" loading="lazy" decoding="async" alt="轮播演示动图：人物、介绍与导航协同切换，每一页重点鲜明又彼此连贯"></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-001-poster.jpg" data-motion="assets/demo-001.webp" data-motion-mobile="assets/demo-001-m.webp" width="800" height="450" loading="lazy" decoding="async" alt="轮播演示动图：人物、介绍与导航协同切换，每一页重点鲜明又彼此连贯"></div>
               <div class="video-info"><span class="video-tag">CAROUSEL / 轮播</span><h3>系列内容，有序登场</h3><p>人物、介绍与导航协同切换，让每一页重点鲜明，又彼此连贯。</p></div>
             </article>
           </div>
@@ -1276,17 +1276,18 @@
     // Motion previews: play on hover, or in view on touch screens.
     const motionCards = $$('.video-card');
     const motionHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const pickMotion = frame => (innerWidth <= 760 && frame.dataset.motionMobile) ? frame.dataset.motionMobile : frame.dataset.motion;
     motionCards.forEach(card => {
       const frame = $('.motion-frame', card);
       const still = frame.getAttribute('src');
-      const motion = frame.dataset.motion;
       card.startMotion = () => {
-        if (frame.getAttribute('src') === motion) return;
-        frame.setAttribute('src', motion);
+        const src = pickMotion(frame);
+        if (frame.getAttribute('src') === src) return;
+        frame.setAttribute('src', src);
         card.classList.add('is-live');
       };
       card.stopMotion = () => {
-        if (frame.getAttribute('src') !== motion) return;
+        if (!card.classList.contains('is-live')) return;
         frame.setAttribute('src', still);
         card.classList.remove('is-live');
       };
@@ -1295,22 +1296,30 @@
         card.addEventListener('mouseleave', card.stopMotion);
       }
     });
-    // Touch screens: play only when the card sits inside the middle of the viewport.
+    // Touch screens: prefetch near the viewport, play once the card is properly on screen.
     if (!motionHover && !reducedMotion && 'IntersectionObserver' in window) {
       const saveData = navigator.connection && navigator.connection.saveData;
       if (!saveData) {
+        const preloadObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const frame = $('.motion-frame', entry.target);
+          const img = new Image();
+          img.src = pickMotion(frame);
+          if (img.decode) img.decode().catch(() => {});
+          preloadObserver.unobserve(entry.target);
+        }), { rootMargin: '1200px 0px' });
         const motionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
           const card = entry.target;
           clearTimeout(card.motionDelay);
-          if (entry.isIntersecting) card.motionDelay = setTimeout(card.startMotion, 140);
+          if (entry.isIntersecting) card.motionDelay = setTimeout(card.startMotion, 80);
           else card.stopMotion();
-        }), { rootMargin: '-16% 0px -28% 0px', threshold: 0 });
-        motionCards.forEach(card => motionObserver.observe(card));
+        }), { rootMargin: '-8% 0px -16% 0px', threshold: 0 });
+        motionCards.forEach(card => { preloadObserver.observe(card); motionObserver.observe(card); });
         document.addEventListener('visibilitychange', () => {
           if (document.hidden) return motionCards.forEach(card => card.stopMotion());
           motionCards.forEach(card => {
             const rect = card.getBoundingClientRect();
-            if (rect.top < innerHeight * .72 && rect.bottom > innerHeight * .16) card.startMotion();
+            if (rect.top < innerHeight * .78 && rect.bottom > innerHeight * .12) card.startMotion();
           });
         });
       }
