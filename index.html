@@ -1266,44 +1266,49 @@
         frame.setAttribute('src', still);
         card.classList.remove('is-live');
       };
-      if (motionHover) {
+    });
+
+    // 桌面：hover 才加载播放，不做全量预取（避免同时下载解码多张）；移开或滚出视口即停，天然单播。
+    if (motionHover) {
+      motionCards.forEach(card => {
         card.addEventListener('mouseenter', card.startMotion);
         card.addEventListener('mouseleave', card.stopMotion);
+      });
+      if ('IntersectionObserver' in window) {
+        const offObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+          if (!entry.isIntersecting) entry.target.stopMotion();
+        }), { threshold: 0 });
+        motionCards.forEach(card => offObserver.observe(card));
       }
-    });
-    // Touch screens: prefetch near the viewport, play once the card is properly on screen.
-    if (!motionHover && !reducedMotion && 'IntersectionObserver' in window) {
+    } else if (!reducedMotion && 'IntersectionObserver' in window) {
+      // 移动端：进入视口播放，任意时刻只让最居中一张在播、其余停止，降低解码与内存开销。
       const saveData = navigator.connection && navigator.connection.saveData;
       if (!saveData) {
-        const preloadObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          const frame = $('.motion-frame', entry.target);
-          const img = new Image();
-          img.src = pickMotion(frame);
-          if (img.decode) img.decode().catch(() => {});
-          preloadObserver.unobserve(entry.target);
-        }), { rootMargin: '1200px 0px' });
-        const motionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-          const card = entry.target;
-          clearTimeout(card.motionDelay);
-          if (entry.isIntersecting) card.motionDelay = setTimeout(card.startMotion, 80);
-          else card.stopMotion();
-        }), { rootMargin: '-8% 0px -16% 0px', threshold: 0 });
-        motionCards.forEach(card => { preloadObserver.observe(card); motionObserver.observe(card); });
-        document.addEventListener('visibilitychange', () => {
-          if (document.hidden) return motionCards.forEach(card => card.stopMotion());
+        let raf = 0;
+        const playNearest = () => {
+          raf = 0;
+          const mid = innerHeight / 2;
+          let best = null, bestDist = Infinity;
           motionCards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            if (rect.top < innerHeight * .78 && rect.bottom > innerHeight * .12) card.startMotion();
+            const r = card.getBoundingClientRect();
+            if (r.bottom <= 0 || r.top >= innerHeight) { card.stopMotion(); return; }
+            const dist = Math.abs(r.top + r.height / 2 - mid);
+            if (dist < bestDist) { bestDist = dist; best = card; }
           });
+          motionCards.forEach(card => { if (card !== best) card.stopMotion(); });
+          if (best) best.startMotion();
+        };
+        const schedule = () => { if (!raf) raf = requestAnimationFrame(playNearest); };
+        const motionObserver = new IntersectionObserver(schedule, { threshold: 0 });
+        motionCards.forEach(card => motionObserver.observe(card));
+        addEventListener('scroll', schedule, { passive: true });
+        addEventListener('resize', schedule);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) motionCards.forEach(card => card.stopMotion());
+          else schedule();
         });
+        schedule();
       }
-    }
-    // Warm the animated frames ahead of time on desktop
-    if (motionHover) {
-      const warmMotion = () => motionCards.forEach(card => { new Image().src = $('.motion-frame', card).dataset.motion; });
-      if ('requestIdleCallback' in window) requestIdleCallback(warmMotion, { timeout: 3000 });
-      else addEventListener('load', warmMotion);
     }
 
     $$('.faq-q').forEach(button => button.addEventListener('click', () => {
