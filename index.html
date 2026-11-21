@@ -307,7 +307,7 @@
     .demo-gallery-head { margin-bottom: 20px; display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-family: var(--mono); font-size: 8px; letter-spacing: 1.2px; }
     .demo-gallery-head span:first-child { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); }
     .demo-gallery-head span:first-child::before { content: ""; width: 6px; height: 6px; background: var(--acid); outline: 1px solid var(--ink); }
-    .video-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+    .video-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
     .video-card { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); background: var(--white); transition: transform .35s var(--ease), border-color .25s, box-shadow .35s var(--ease); }
     .video-card:hover { border-color: #9aa392; transform: translateY(-6px); box-shadow: 8px 8px 0 rgba(17,19,15,.07), inset 0 0 0 1px rgba(215,255,99,.55); }
     .video-card.is-live { border-color: var(--ink); box-shadow: 4px 4px 0 rgba(17,19,15,.1); }
@@ -629,7 +629,7 @@
       .engine-board { grid-template-columns: 1fr; }
       .engine-card.story-card, .engine-card.style-card { min-height: 520px; }
       .asset-card, .export-card { min-height: 330px; }
-      .video-grid { gap: 11px; }
+      .video-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; }
       .video-info { padding: 5px 12px 15px; }
       .video-info h3 { font-size: 15px; }
       .video-info p { font-size: 10px; }
@@ -954,9 +954,9 @@
 
     <section class="section" id="demo" aria-labelledby="demoTitle">
       <div class="container">
-        <div class="section-head showcase-head reveal"><div><span class="kicker">04 — 产品演示 / PRODUCT SHOWCASE</span><h2 id="demoTitle">让风格，<br>融进<em>丝滑效果。</em></h2></div><p>三段真实页面演示，看构图、转场与轮播如何各司其职。信息自然流动，画面不乱、不赶、不吵。把小窗移入视野，慢慢看。</p></div>
+        <div class="section-head showcase-head reveal"><div><span class="kicker">04 — 产品演示 / PRODUCT SHOWCASE</span><h2 id="demoTitle">让风格，<br>融进<em>丝滑效果。</em></h2></div><p>四段真实页面演示，看构图、转场、轮播与色卡如何各司其职。信息自然流动，画面不乱、不赶、不吵。把小窗移入视野，慢慢看。</p></div>
         <div class="demo-gallery reveal">
-          <div class="demo-gallery-head"><span>REAL DECKS / MOTION STUDIES</span><span>03 WINDOWS · SOUNDLESS PREVIEW</span></div>
+          <div class="demo-gallery-head"><span>REAL DECKS / MOTION STUDIES</span><span>04 WINDOWS · SOUNDLESS PREVIEW</span></div>
           <div class="video-grid">
             <article class="video-card">
               <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">016_Composition.webp</span><span class="video-index">01</span></div>
@@ -972,6 +972,11 @@
               <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">001_Character.webp</span><span class="video-index">03</span></div>
               <div class="video-frame"><img class="motion-frame" src="assets/demo-001-poster.jpg" data-motion="assets/demo-001.webp" data-motion-mobile="assets/demo-001-m.webp" width="800" height="450" loading="lazy" decoding="async" alt="轮播演示动图：人物、介绍与导航协同切换，每一页重点鲜明又彼此连贯"></div>
               <div class="video-info"><span class="video-tag">CAROUSEL / 轮播</span><h3>系列内容，有序登场</h3><p>人物、介绍与导航协同切换，让每一页重点鲜明，又彼此连贯。</p></div>
+            </article>
+            <article class="video-card">
+              <div class="video-window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="video-file">070_Gradient_Cards.webp</span><span class="video-index">04</span></div>
+              <div class="video-frame"><img class="motion-frame" src="assets/demo-070-poster.jpg" data-motion="assets/demo-070.webp" data-motion-mobile="assets/demo-070-m.webp" width="800" height="450" loading="lazy" decoding="async" alt="色卡演示动图：七张渐变色卡从整齐到扇形绽放，翻转之间层次分明"></div>
+              <div class="video-info"><span class="video-tag">GRADIENT / 色卡</span><h3>一色一卡，收放有致</h3><p>七张渐变色卡从整齐排开到扇形绽放，翻转之间层次分明，收得住也放得开。</p></div>
             </article>
           </div>
         </div>
