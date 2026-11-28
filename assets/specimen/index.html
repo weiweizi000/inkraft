@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#d3dceb">
+  <title>墨构 inkraft — 交互片头</title>
+  <link rel="stylesheet" href="./assets/index-CW4ShfPL.css">
+</head>
+<body>
+  <canvas class="canvas" aria-label="墨构交互片头：移动鼠标推动球体，点击切换材质" role="img"></canvas>
+  <p class="fallback" hidden>当前浏览器不支持 WebGPU，请进入墨构首页。</p>
+  <script>
+    (() => {
+      const root = document.documentElement;
+      let ready = false;
+      let unsupported = false;
+      let dark = false;
+      const send = (type, detail = {}) => parent.postMessage({ source: 'inkraft-specimen', type, ...detail }, '*');
+      const sync = () => {
+        const nextDark = root.classList.contains('is-dark');
+        if (nextDark !== dark) {
+          dark = nextDark;
+          send('theme', { dark });
+        }
+        if (root.classList.contains('is-ready') && !ready) {
+          ready = true;
+          send('ready');
+        }
+        if (root.classList.contains('is-unsupported') && !unsupported) {
+          unsupported = true;
+          send('unsupported');
+        }
+      };
+      new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['class', 'data-style'] });
+      addEventListener('keydown', event => {
+        if (event.key === 'Escape') send('exit');
+      });
+      addEventListener('error', event => {
+        if (event.error) send('error');
+      }, true);
+      sync();
+    })();
+  </script>
+  <script type="module" src="./assets/index-CiF4vBG3.js"></script>
+</body>
+</html>
